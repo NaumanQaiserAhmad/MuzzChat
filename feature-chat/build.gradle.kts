@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.paging.compose)
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.androidx.core.ktx)
@@ -42,12 +43,16 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    implementation(project(":core-ui"))
+    implementation(project(":core-domain"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
     implementation(libs.hilt.navigation.compose)            // use hiltViewModel() inside this module
     implementation(libs.androidx.lifecycle.viewmodel.ktx)   // viewModelScope, etc
     implementation(libs.androidx.lifecycle.runtime.compose) // collectAsStateWithLifecycle
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material.icons.extended) // gives Icons.Filled/Outlined/etc
 
 }

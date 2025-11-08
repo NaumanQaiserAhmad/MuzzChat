@@ -1,0 +1,18 @@
+<resources>
+    <!-- Status glyphs -->
+    <string name="status_glyph_sending">…</string>
+    <string name="status_glyph_sent">✓</string>
+    <string name="status_glyph_delivered">✓✓</string>
+    <string name="status_glyph_read">✓✓</string>
+    <string name="status_glyph_failed">!</string>
+
+    <!-- Status text (for a11y / contentDescription) -->
+    <string name="status_text_sending">Sending</string>
+    <string name="status_text_sent">Sent</string>
+    <string name="status_text_delivered">Delivered</string>
+    <string name="status_text_read">Read</string>
+    <string name="status_text_failed">Failed</string>
+
+    <!-- Date header accessibility wrapper -->
+    <string name="date_chip_cd">Date header: %1$s</string>
+</resources>

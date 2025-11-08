@@ -3,13 +3,27 @@ package com.muzz.muzzmatch
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import com.example.feature.chat.navigation.ChatRoute
+import com.example.muzzchat.theme.MuzzTheme
+
 import dagger.hilt.android.AndroidEntryPoint
-import com.muzz.chat.presentation.ChatScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { ChatScreen() }
+        setContent {
+            MuzzTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    // color = MaterialTheme.colorScheme.background
+                ) {
+                    ChatRoute(partnerName = "Sarah")
+                }
+            }
+        }
     }
 }

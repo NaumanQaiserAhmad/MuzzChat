@@ -1,22 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)           // keep if this module uses Hilt
-    alias(libs.plugins.jetbrains.kotlin.kapt)  // kapt for Hilt + Room
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.jetbrains.kotlin.kapt)
 }
 
 android {
-    namespace = "com.muzz.core.data"   // align with project naming
-    compileSdk = 36                    // align with the rest of the project
-
-    defaultConfig {
-        minSdk = 24
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    // Desugaring is usually only needed in the app module; keep here only if you
-    // actually use Java 8+ APIs in this library and want to propagate it.
+    namespace = "com.muzz.core.data"
+    compileSdk = 36
+    defaultConfig { minSdk = 24 }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -29,24 +21,25 @@ android {
 dependencies {
     implementation(project(":core-domain"))
 
+    // ✅ This fixes "Unresolved reference: Inject"
+    implementation(libs.javax.inject)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
     // Room
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
-    // (optional) for tests:
     testImplementation(libs.room.testing)
-
-    // DI
-    implementation(libs.javax.inject)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
-    // Desugaring (see note above)
+    // Desugaring (only if needed here)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    // ✅ Unit test deps (moved from implementation → testImplementation)
+    // Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)

@@ -1,6 +1,5 @@
 package com.muzz.core.domain.model
 
-import com.muzz.core.domain.model.DeliveryStatus
 import java.time.Instant
 
 data class Message(
