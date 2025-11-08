@@ -23,3 +23,4 @@ rootProject.name = "My Application"
 include(":app")
 include(":feature-chat")
 include(":core-ui")
+include(":core-domain")
