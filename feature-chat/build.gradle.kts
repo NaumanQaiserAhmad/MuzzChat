@@ -45,4 +45,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.hilt.navigation.compose)            // use hiltViewModel() inside this module
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)   // viewModelScope, etc
+    implementation(libs.androidx.lifecycle.runtime.compose) // collectAsStateWithLifecycle
+
 }
