@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.muzz.core.ui"
+    namespace = "com.muzz.core.domain"
     compileSdk = 36
 
     defaultConfig {

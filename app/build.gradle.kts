@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":feature-chat"))
     implementation(project(":core-ui"))
     implementation(project(":core-domain"))
+    implementation(project(":core-data"))
 
     // Tests
     testImplementation(libs.junit)
