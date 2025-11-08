@@ -52,6 +52,8 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
+    implementation(libs.androidx.navigation.compose)
+
     // Modules
     implementation(project(":feature-chat"))
     implementation(project(":core-ui"))

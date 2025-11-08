@@ -12,6 +12,7 @@ junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 hilt = "2.51.1"
 hiltNav = "1.3.0"
+navigation = "2.9.0"   # works with AGP 8.9 / compileSdk 36
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +38,7 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
