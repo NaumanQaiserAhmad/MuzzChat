@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.feature.chat.navigation.ChatRoute
-import com.example.muzzchat.theme.MuzzTheme
+import com.muzz.chat.ui.ChatRoute
+import com.muzz.muzzmatch.ui.theme.MuzzTheme
 
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.PagingData.Companion.from
 import androidx.paging.cachedIn
-import com.example.core.domain.usecase.SeedMessages
+import com.muzz.core.domain.usecase.SeedMessages
 import com.muzz.chat.model.UiItem
 import com.muzz.core.domain.formats.DateFormats
 import com.muzz.core.domain.model.Message

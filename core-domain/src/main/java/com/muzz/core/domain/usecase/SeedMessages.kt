@@ -1,4 +1,4 @@
-package com.example.core.domain.usecase
+package com.muzz.core.domain.usecase
 
 import android.os.Build
 import androidx.annotation.RequiresApi

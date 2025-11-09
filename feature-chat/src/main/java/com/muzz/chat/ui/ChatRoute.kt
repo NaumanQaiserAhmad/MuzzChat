@@ -1,9 +1,9 @@
-package com.example.feature.chat.navigation
+package com.muzz.chat.ui
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.feature.chat.presentation.ui.ChatScreen
 import com.muzz.chat.presentation.ChatViewModel
+import com.muzz.chat.presentation.ui.ChatScreen
 
 @Composable
 fun ChatRoute(

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.muzz.core.domain.usecase.GetMessages
 import com.muzz.core.domain.usecase.ReceiveMessage
-import com.example.core.domain.usecase.SeedMessages
+import com.muzz.core.domain.usecase.SeedMessages
 import com.muzz.core.data.local.AppDatabase
 import com.muzz.core.data.local.MessageDao
 import com.muzz.core.data.repo.MessageRepositoryImpl

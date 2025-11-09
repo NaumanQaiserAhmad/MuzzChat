@@ -1,32 +1,44 @@
-package com.example.feature.chat.presentation.ui
+package com.muzz.chat.presentation.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.Color
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
+import com.muzz.chat.presentation.components.MessageInputBar
 import com.muzz.chat.model.UiItem
 import com.muzz.chat.presentation.ChatViewModel
 import com.muzz.chat.presentation.components.ConversationDivider
 import com.muzz.chat.presentation.components.DateChip
-import com.muzz.chat.presentation.components.MessageInputBar
 import com.muzz.chat.presentation.components.MessageRow
 import com.muzz.chat.presentation.ui.topbar.ChatTopBar
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.Instant
+import kotlin.math.max
 
 @Composable
 fun ChatScreen(
@@ -34,61 +46,90 @@ fun ChatScreen(
     vm: ChatViewModel
 ) {
     val items = vm.pagedUi.collectAsLazyPagingItems()
-    val state = vm.uiState.collectAsState()
+    val uiState by vm.uiState.collectAsState()
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        ChatTopBar(partnerName = partnerName, onBack = {}, onMenu = {})
-
-        // Apply weight HERE (inside ColumnScope)
-        ChatList(
-            modifier = Modifier.weight(1f),
-            items = items,
-            listState = listState,
-            bottomContentPadding = 96.dp
-        )
-
-        // Bottom input card with rounded top corners + shadow
-        Surface(
-            tonalElevation = 0.dp,
-            shadowElevation = 12.dp,
-            shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .imePadding()
-                .navigationBarsPadding()
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
+            ChatTopBar(
+                partnerName = partnerName,
+                onBack = {},
+                onMenu = {}
+            )
 
-            //  separator BETWEEN the list and the input bar
-            if (state.value is ChatViewModel.UiState.Error) {
-                androidx.compose.material3.Text(
-                    text = (state.value as ChatViewModel.UiState.Error).message,
-                    color = androidx.compose.ui.graphics.Color.Red,
-                    modifier = Modifier.padding(8.dp)
+            // List takes remaining height
+            ChatList(
+                modifier = Modifier.weight(1f),
+                items = items,
+                listState = listState,
+                bottomContentPadding = 96.dp // keeps messages clear of the input when IME is hidden
+            )
+
+            BottomInputContainer {
+                if (uiState is ChatViewModel.UiState.Error) {
+                    Text(
+                        text = (uiState as ChatViewModel.UiState.Error).message,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                    )
+                }
+
+                // subtle separator above input
+                ConversationDivider()
+
+                MessageInputBar(
+                    placeholder = "Type a message…",
+                    onSend = { vm.onSend(it) },
+                    sendButtonColor = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-            ConversationDivider()
+        }
+    }
 
-            MessageInputBar(
-                placeholder = "Type a message…",
-                onSend = { vm.onSend(it) },
-                sendButtonColor = Color(0xFFE64B71), // whatever you're using
-                modifier = Modifier
-                    .navigationBarsPadding() // keep above gestures
-                    .imePadding()            // lift when keyboard shows
+    // Auto-scroll to latest on first load / size changes
+    LaunchedEffect(items.itemCount) {
+        if (items.itemCount > 0) {
+            scope.launch { listState.animateScrollToItem(items.itemCount - 1) }
+        }
+    }
+}
+
+/**
+ * Bottom container that **does not** double-count insets.
+ * It uses max(IME, navBar) for a single bottom padding, and
+ * applies only horizontal nav-bar insets.
+ */
+@Composable
+private fun BottomInputContainer(
+    content: @Composable () -> Unit
+) {
+    val density = LocalDensity.current
+    val imeBottomPx = WindowInsets.ime.getBottom(density)
+    val navBottomPx = WindowInsets.navigationBars.getBottom(density)
+    val bottomDp = with(density) { max(imeBottomPx, navBottomPx).toDp() }
+
+    Surface(
+        tonalElevation = 0.dp,
+        shadowElevation = 12.dp,
+        // square top is fine; if you want rounded:
+        // shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            // safe horizontally for gesture/nav areas
+            .windowInsetsPadding(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal)
             )
-        }
-
-        LaunchedEffect(items.itemCount) {
-            if (items.itemCount > 0) {
-                scope.launch { listState.animateScrollToItem(items.itemCount - 1) }
-            }
-        }
+            // single, controlled bottom padding
+            .padding(bottom = bottomDp)
+    ) {
+        content()
     }
 }
 
@@ -115,7 +156,10 @@ private fun ChatList(
                 is UiItem.SectionHeader -> DateChip(row.title)
                 is UiItem.Bubble -> {
                     val compactBelow = computeCompactBelow(items, index)
-                    MessageRow(text = row.text, isMine = row.isMine, status = row.status,
+                    MessageRow(
+                        text = row.text,
+                        isMine = row.isMine,
+                        status = row.status,
                         compactSpacingBelow = compactBelow
                     )
                 }
@@ -125,7 +169,7 @@ private fun ChatList(
     }
 }
 
-/** SAFE snapshot-based version to avoid OOB when Paging updates between reads. */
+/** Snapshot-safe spacing logic between bubbles from same sender within 20s. */
 private fun computeCompactBelow(items: LazyPagingItems<UiItem>, index: Int): Boolean {
     val list = items.itemSnapshotList.items
     val curr = list.getOrNull(index) as? UiItem.Bubble ?: return false

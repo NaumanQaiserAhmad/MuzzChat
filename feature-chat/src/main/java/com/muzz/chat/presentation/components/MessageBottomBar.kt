@@ -6,9 +6,12 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -19,12 +22,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
-// ✅ add these two imports for Icons
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Send
-
+/**
+ * Thin dual-shade separator to place ABOVE the input bar.
+ */
 @Composable
 fun ConversationDivider(
     modifier: Modifier = Modifier,
@@ -69,7 +72,7 @@ fun MessageInputBar(
 ) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
 
-    // Track focus to swap border colors (optional, but harmless)
+    // Track focus (optional, can be used for styling)
     val interaction = remember { MutableInteractionSource() }
     val isFocused by interaction.collectIsFocusedAsState()
 
@@ -84,27 +87,27 @@ fun MessageInputBar(
             onValueChange = { text = it },
             modifier = Modifier
                 .weight(1f)
-                .heightIn(min = 48.dp, max = 100.dp),
-            placeholder = { Text(placeholder) },
+                .heightIn(min = 48.dp, max = 160.dp),
+            placeholder = { Text(placeholder, maxLines = 1, overflow = TextOverflow.Ellipsis) },
             singleLine = false,
             minLines = 1,
             maxLines = 6,
             shape = RoundedCornerShape(28.dp),
             interactionSource = interaction,
-            // ✅ Use TextFieldDefaults.colors in Material3
+            // Material3: prefer TextFieldDefaults.colors for broad compatibility
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
-                focusedIndicatorColor = sendButtonColor,      // border when focused
-                unfocusedIndicatorColor = Color(0xFFD0D5DD),  // border when not focused
-                focusedTextColor = Color(0xFF111827),
-                unfocusedTextColor = Color(0xFF111827),
+                focusedIndicatorColor = sendButtonColor,
+                unfocusedIndicatorColor = Color(0xFFD0D5DD),
                 cursorColor = sendButtonColor
-            )
+            ),
+            textStyle = LocalTextStyle.current.copy(color = Color(0xFF111827))
         )
 
         Spacer(Modifier.width(10.dp))
 
+        // Gradient send button
         val gradient = Brush.horizontalGradient(
             listOf(Color(0xFFFF9AB5), sendButtonColor)
         )
@@ -123,7 +126,7 @@ fun MessageInputBar(
                 }
             }) {
                 Icon(
-                    imageVector = Icons.Filled.Send, // ✅ use Filled (or Outlined/Rounded)
+                    imageVector = Icons.Rounded.Send,
                     contentDescription = "Send",
                     tint = Color.White
                 )
