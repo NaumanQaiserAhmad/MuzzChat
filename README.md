@@ -48,6 +48,10 @@ This repo implements the Muzz chat exercise using **Kotlin 2.x**, **Compose Mate
 - Unit tests: `./gradlew :feature-chat:testDebugUnitTest`.
 - UI tests (minimal): `./gradlew :feature-chat:connectedDebugAndroidTest`.
 
+## Demo
+https://github.com/user-attachments/assets/3a5d1fcf-4a5b-43b8-a730-5e75c849ebde
+
+
 ## Folder Hints
 - `feature-chat/presentation` — `ChatScreen`, `MessageRow`, `DateChip`, `MessageInputBar`.
 - `core-domain/usecase` — `GetMessages`, `SendMessage`, `ReceiveMessage`, `SeedMessages`.
