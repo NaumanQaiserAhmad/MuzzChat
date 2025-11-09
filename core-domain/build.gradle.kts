@@ -38,4 +38,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // ✅ FIX: Added this line to make runTest available
+    testImplementation(libs.kotlinx.coroutines.test)
 }
