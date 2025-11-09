@@ -61,6 +61,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material.icons.extended) // gives Icons.Filled/Outlined/etc
 
-
+    testImplementation(libs.turbine) // ✅ FIX 3: Add the Turbine dependency
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
