@@ -17,6 +17,11 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+
+        defaultConfig {
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+
     buildFeatures { compose = true }
 
     compileOptions {
@@ -33,6 +38,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.androidx.core.ktx)
@@ -55,4 +61,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material.icons.extended) // gives Icons.Filled/Outlined/etc
 
+
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
